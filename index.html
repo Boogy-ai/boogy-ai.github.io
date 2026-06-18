@@ -63,6 +63,9 @@
   }
   .lede{font-size:var(--fs-lede); color:var(--muted); max-width:52ch; margin:24px 0 0}
   .lede b{color:var(--ink); font-weight:500}
+  .store{margin:20px 0 0; max-width:54ch; padding-left:16px; border-left:2px solid var(--violet); font-size:1.02rem; color:var(--muted)}
+  .store b{color:var(--ink); font-weight:500}
+  .store .hl{background:linear-gradient(100deg,var(--emerald),var(--sky)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; font-weight:600}
 
   /* ── command card (the "hackery" code box) ── */
   .cmd{
@@ -106,7 +109,7 @@
   /* ── motion ── */
   @keyframes rise{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
   .anim{opacity:0; animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
-  .d1{animation-delay:.05s} .d2{animation-delay:.13s} .d3{animation-delay:.21s} .d4{animation-delay:.29s}
+  .d1{animation-delay:.05s} .d2{animation-delay:.13s} .d3{animation-delay:.21s} .d4{animation-delay:.29s} .d5{animation-delay:.37s}
   .routes .route{opacity:0; animation:rise .6s cubic-bezier(.2,.7,.2,1) forwards}
   .routes .route:nth-child(2){animation-delay:.30s} .routes .route:nth-child(3){animation-delay:.36s}
   .routes .route:nth-child(4){animation-delay:.42s} .routes .route:nth-child(5){animation-delay:.48s}
@@ -136,11 +139,12 @@
   </header>
 
   <section class="hero">
-    <div class="uri anim d1"><span class="dot"></span><span class="scheme">boogy://</span>_sys/services/dev-hub</div>
-    <h1 class="anim d2">One binary.<br>A route, a database,<br>an <span class="em">MCP server</span>.</h1>
-    <p class="lede anim d3">Boogy compiles Rust to <b>wasm32-wasip2</b> and hot-swaps it into a shared runtime — capability security, fast per-service storage, host-mediated cross-service calls. Start here.</p>
+    <div class="uri anim d1"><span class="dot"></span><span class="scheme">boogy://</span>you/services/hello</div>
+    <h1 class="anim d2">One deploy.<br><span class="em">Frontend</span>, API, and data.</h1>
+    <p class="lede anim d3">Boogy compiles Rust to <b>wasm32-wasip2</b> and serves a complete service — a frontend, plus <b>REST, JSON-RPC, and MCP</b>, with capability security.</p>
+    <p class="store anim d4">Every service gets a <b>relational, ACID</b> data store that <b>scales on its own</b> and <b>bills per use</b> — and a single <span class="hl">transaction can span calls across services</span>.</p>
 
-    <div class="cmd anim d4" aria-label="Get started">
+    <div class="cmd anim d5" aria-label="Get started">
       <div class="bar"><i></i><i></i><i></i><span>&nbsp;your project</span></div>
 <pre><span class="c"># grab the SDK + a starter service</span>
 <span class="p">$</span> cargo add boogy-sdk <span class="c">--git</span> <span class="s">https://github.com/Boogy-ai/boogy-sdk</span>
