@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Boogy — Developer Hub</title>
+<meta name="description" content="Build services on Boogy: Rust compiled to Wasm, deployed to a shared runtime with isolated storage, capability security, and a built-in MCP surface.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Hammersmith+One&family=JetBrains+Mono:wght@400;500;700&family=Unica+One&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#060610; --panel:#0b0b15; --panel-2:#10101e;
+    --ink:#ECECF4; --muted:#8B8BA7; --faint:#5b5b73;
+    --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.14);
+    --emerald:#34D399; --sky:#38BDF8; --violet:#A78BFA; --coral:#FB7185;
+    --fs-uri:.78rem; --fs-tag:.66rem; --fs-body:1.0rem; --fs-lede:1.18rem;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Figtree",system-ui,sans-serif; font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    min-height:100vh; overflow-x:hidden;
+  }
+  /* Aurora — low, ambient, in the corners; the only "color" until you hover a route */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(60vw 50vh at 12% -8%, rgba(52,211,153,.10), transparent 70%),
+      radial-gradient(55vw 45vh at 105% 8%, rgba(56,189,248,.09), transparent 70%),
+      radial-gradient(70vw 60vh at 80% 108%, rgba(167,139,250,.08), transparent 70%),
+      radial-gradient(40vw 40vh at -5% 95%, rgba(251,113,133,.06), transparent 70%);
+  }
+  .wrap{position:relative; z-index:1; max-width:880px; margin:0 auto; padding:0 24px}
+  a{color:inherit; text-decoration:none}
+
+  /* ── top bar ── */
+  .topbar{display:flex; align-items:center; justify-content:space-between; padding:26px 0 0}
+  .brand{font-family:"Hammersmith One",sans-serif; font-size:1.35rem; letter-spacing:.01em}
+  .brand b{color:var(--emerald); font-weight:400}
+  .topnav{display:flex; gap:22px; font-family:"JetBrains Mono",monospace; font-size:.8rem; color:var(--muted)}
+  .topnav a{transition:color .18s} .topnav a:hover{color:var(--ink)}
+
+  /* ── hero ── */
+  .hero{padding:84px 0 56px}
+  .uri{
+    display:inline-flex; align-items:center; gap:9px; font-family:"JetBrains Mono",monospace;
+    font-size:var(--fs-uri); color:var(--muted); border:1px solid var(--line);
+    border-radius:5px; padding:7px 12px; background:rgba(255,255,255,.02);
+  }
+  .uri .dot{width:7px; height:7px; border-radius:50%; background:var(--emerald); box-shadow:0 0 10px var(--emerald)}
+  .uri .scheme{color:var(--faint)}
+  h1{
+    font-family:"Unica One",sans-serif; font-weight:400; text-transform:uppercase;
+    font-size:clamp(2.6rem,7.5vw,4.6rem); line-height:.98; letter-spacing:.005em;
+    margin:26px 0 0; max-width:14ch;
+  }
+  h1 .em{
+    background:linear-gradient(100deg,var(--emerald),var(--sky) 55%,var(--violet));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+  }
+  .lede{font-size:var(--fs-lede); color:var(--muted); max-width:52ch; margin:24px 0 0}
+  .lede b{color:var(--ink); font-weight:500}
+
+  /* ── command card (the "hackery" code box) ── */
+  .cmd{
+    margin-top:34px; border:2px solid var(--line-2); border-radius:5px;
+    background:linear-gradient(180deg,rgba(56,189,248,.05),rgba(0,0,0,0));
+    box-shadow:0 0 0 1px rgba(0,0,0,.4), 0 18px 50px -28px rgba(56,189,248,.45);
+    font-family:"JetBrains Mono",monospace; font-size:.84rem; overflow:hidden;
+  }
+  .cmd .bar{display:flex; align-items:center; gap:7px; padding:10px 14px; border-bottom:1px solid var(--line); color:var(--faint); font-size:.72rem}
+  .cmd .bar i{width:9px; height:9px; border-radius:50%; background:var(--line-2); font-style:normal}
+  .cmd pre{margin:0; padding:16px 18px; overflow-x:auto; line-height:1.85; color:#cfd2e6}
+  .cmd .p{color:var(--emerald)} .cmd .c{color:var(--faint)} .cmd .s{color:var(--sky)}
+
+  /* ── routes (the signature) ── */
+  .routes{padding:18px 0 10px}
+  .sec-label{font-family:"JetBrains Mono",monospace; font-size:.72rem; color:var(--faint); letter-spacing:.14em; text-transform:uppercase; padding-bottom:14px}
+  .route{
+    display:grid; grid-template-columns:minmax(0,160px) 1fr auto; align-items:center; gap:18px;
+    padding:20px 4px 20px 18px; border-top:1px solid var(--line);
+    border-left:2px solid transparent; transition:border-color .2s, background .2s, transform .2s;
+  }
+  .route:last-of-type{border-bottom:1px solid var(--line)}
+  .route .path{font-family:"JetBrains Mono",monospace; font-size:.84rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .route .path .sl{color:var(--faint)}
+  .route .body h3{margin:0; font-size:1.06rem; font-weight:600; letter-spacing:.005em}
+  .route .body p{margin:4px 0 0; font-size:.92rem; color:var(--muted)}
+  .route .body code{font-family:"JetBrains Mono",monospace; font-size:.86em; color:var(--ink); background:rgba(255,255,255,.05); padding:1px 5px; border-radius:4px}
+  .route .go{font-family:"JetBrains Mono",monospace; color:var(--faint); transition:transform .2s, color .2s; font-size:1.05rem}
+  .route:hover,.route:focus-visible{outline:none; background:rgba(255,255,255,.018); border-left-color:var(--ac); transform:translateX(2px)}
+  .route:hover .go,.route:focus-visible .go{color:var(--ac); transform:translateX(4px)}
+  .route:hover h3,.route:focus-visible h3{color:var(--ac)}
+  .route:hover .path,.route:focus-visible .path{color:var(--ac)}
+  /* accent per route */
+  .ac-sdk{--ac:var(--emerald)} .ac-docs{--ac:var(--sky)} .ac-skills{--ac:var(--violet)} .ac-catalog{--ac:var(--coral)} .ac-site{--ac:var(--ink)}
+
+  /* ── footer ── */
+  footer{margin-top:64px; padding:30px 0 56px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 22px; align-items:center; justify-content:space-between; font-family:"JetBrains Mono",monospace; font-size:.76rem; color:var(--faint)}
+  footer a{color:var(--muted); transition:color .18s} footer a:hover{color:var(--ink)}
+  footer .links{display:flex; gap:22px; flex-wrap:wrap}
+
+  /* ── motion ── */
+  @keyframes rise{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none}}
+  .anim{opacity:0; animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+  .d1{animation-delay:.05s} .d2{animation-delay:.13s} .d3{animation-delay:.21s} .d4{animation-delay:.29s}
+  .routes .route{opacity:0; animation:rise .6s cubic-bezier(.2,.7,.2,1) forwards}
+  .routes .route:nth-child(2){animation-delay:.30s} .routes .route:nth-child(3){animation-delay:.36s}
+  .routes .route:nth-child(4){animation-delay:.42s} .routes .route:nth-child(5){animation-delay:.48s}
+  .routes .route:nth-child(6){animation-delay:.54s}
+  @media (prefers-reduced-motion:reduce){.anim,.routes .route{animation:none; opacity:1}}
+
+  /* ── responsive ── */
+  @media (max-width:620px){
+    .topnav a.hide-sm{display:none}
+    h1{font-size:clamp(2.2rem,11vw,3rem)}
+    .route{grid-template-columns:1fr auto; gap:12px}
+    .route .path{grid-column:1; grid-row:1; font-size:.76rem}
+    .route .body{grid-column:1; grid-row:2}
+    .route .go{grid-column:2; grid-row:1 / span 2; align-self:center}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="topbar anim d1">
+    <div class="brand">boog<b>y</b></div>
+    <nav class="topnav">
+      <a class="hide-sm" href="https://boogy.ai">boogy.ai</a>
+      <a href="https://github.com/Boogy-ai">github</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="uri anim d1"><span class="dot"></span><span class="scheme">boogy://</span>_sys/services/dev-hub</div>
+    <h1 class="anim d2">One binary.<br>A route, a database,<br>an <span class="em">MCP server</span>.</h1>
+    <p class="lede anim d3">Boogy compiles Rust to <b>wasm32-wasip2</b> and hot-swaps it into a shared runtime — capability security, fast per-service storage, host-mediated cross-service calls. Start here.</p>
+
+    <div class="cmd anim d4" aria-label="Get started">
+      <div class="bar"><i></i><i></i><i></i><span>&nbsp;your project</span></div>
+<pre><span class="c"># grab the SDK + a starter service</span>
+<span class="p">$</span> cargo add boogy-sdk <span class="c">--git</span> <span class="s">https://github.com/Boogy-ai/boogy-sdk</span>
+
+<span class="c"># teach your coding agent how to build</span>
+<span class="p">$</span> boogy skills install</pre>
+    </div>
+  </section>
+
+  <section class="routes">
+    <div class="sec-label">// routes</div>
+
+    <a class="route ac-docs" href="https://boogy-ai.github.io/boogy-sdk/">
+      <div class="path"><span class="sl">/</span>boogy-sdk<span class="sl">/</span>docs</div>
+      <div class="body"><h3>API reference</h3><p>Rustdoc for every type, macro, router, and guard in the SDK.</p></div>
+      <div class="go">→</div>
+    </a>
+
+    <a class="route ac-sdk" href="https://github.com/Boogy-ai/boogy-sdk">
+      <div class="path"><span class="sl">/</span>boogy-sdk</div>
+      <div class="body"><h3>SDK &amp; quickstart</h3><p>Router, typed handlers, <code>wit_glue!</code>, store helpers, the <code>boogy</code> CLI, and a copy-to-start template.</p></div>
+      <div class="go">→</div>
+    </a>
+
+    <a class="route ac-skills" href="https://github.com/Boogy-ai/boogy-superpowers">
+      <div class="path"><span class="sl">/</span>superpowers</div>
+      <div class="body"><h3>Agent skills</h3><p>Expert build workflows your coding agent installs and follows — auto-discovered by Claude Code.</p></div>
+      <div class="go">→</div>
+    </a>
+
+    <a class="route ac-catalog" href="https://github.com/Boogy-ai/boogy-catalog">
+      <div class="path"><span class="sl">/</span>catalog</div>
+      <div class="body"><h3>Service catalog</h3><p>Provisionable building blocks — send email, take payments — deployed into your tenant, wired to your own keys.</p></div>
+      <div class="go">→</div>
+    </a>
+
+    <a class="route ac-site" href="https://boogy.ai">
+      <div class="path"><span class="sl">/</span>platform</div>
+      <div class="body"><h3>boogy.ai</h3><p>Deploy, observe, and manage your services — the full platform and the story behind it.</p></div>
+      <div class="go">→</div>
+    </a>
+  </section>
+
+  <footer>
+    <span>© Boogy · built for the agentic web</span>
+    <span class="links">
+      <a href="https://github.com/Boogy-ai/boogy-sdk">SDK</a>
+      <a href="https://boogy-ai.github.io/boogy-sdk/">Docs</a>
+      <a href="https://boogy.ai">Platform</a>
+      <a href="https://github.com/Boogy-ai">GitHub</a>
+    </span>
+  </footer>
+
+</div>
+</body>
+</html>
