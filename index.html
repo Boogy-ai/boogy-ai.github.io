@@ -5,6 +5,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Boogy — Developer Hub</title>
 <meta name="description" content="Build services on Boogy: Rust compiled to Wasm, deployed to a shared runtime with isolated storage, capability security, and a built-in MCP surface.">
+<link rel="canonical" href="https://boogy-ai.github.io/">
+<meta name="theme-color" content="#060610">
+<meta name="robots" content="index,follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Boogy">
+<meta property="og:title" content="Boogy — Developer Hub">
+<meta property="og:description" content="Build services on Boogy: Rust compiled to Wasm, deployed to a shared runtime with isolated storage, capability security, and a built-in MCP surface.">
+<meta property="og:url" content="https://boogy-ai.github.io/">
+<meta property="og:image" content="https://boogy.ai/boogy-logo-white.png">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Boogy — Developer Hub">
+<meta name="twitter:description" content="Build services on Boogy: Rust compiled to Wasm, deployed to a shared runtime with isolated storage, capability security, and a built-in MCP surface.">
+<meta name="twitter:image" content="https://boogy.ai/boogy-logo-white.png">
+
+<!-- Structured data: ties the dev hub to the Boogy org/site for rich results + LLM extraction. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Organization","@id":"https://boogy.ai/#organization","name":"Boogy","url":"https://boogy.ai","logo":"https://boogy.ai/boogy-logo-white.png","sameAs":["https://github.com/Boogy-ai"]},
+{"@type":"WebSite","@id":"https://boogy-ai.github.io/#website","url":"https://boogy-ai.github.io/","name":"Boogy Developer Hub","description":"Build services on Boogy: Rust compiled to Wasm, deployed to a shared runtime with isolated storage, capability security, and a built-in MCP surface.","publisher":{"@id":"https://boogy.ai/#organization"}}
+]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Hammersmith+One&family=JetBrains+Mono:wght@400;500;700&family=Unica+One&display=swap" rel="stylesheet">
@@ -139,7 +164,7 @@
   </header>
 
   <section class="hero">
-    <div class="uri anim d1"><span class="dot"></span><span class="scheme">boogy://</span>you/services/hello</div>
+    <div class="uri anim d1"><span class="dot"></span><span class="uri-text"><span class="scheme">boogy://</span>you/services/hello</span></div>
     <h1 class="anim d2">Vibe whole apps<br>into <span class="em">production</span>.</h1>
     <p class="lede anim d3">Vibe-code a frontend, an API over <b>REST, JSON-RPC, or MCP</b>, and a store that scales itself — Boogy runs it all as real production services: <b>interconnected, fast, and pay-per-use</b>.</p>
     <p class="store anim d4">Every service gets a <b>relational, ACID</b> data store that <b>scales on its own</b> and <b>bills per use</b> — and a single <span class="hl">transaction can span calls across services</span>.</p>
