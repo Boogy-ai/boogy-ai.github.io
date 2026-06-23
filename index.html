@@ -126,6 +126,19 @@
   /* accent per route */
   .ac-sdk{--ac:var(--emerald)} .ac-docs{--ac:var(--sky)} .ac-skills{--ac:var(--violet)} .ac-catalog{--ac:var(--coral)} .ac-site{--ac:var(--ink)}
 
+  /* ── agents start here ── */
+  .start{padding:34px 0 6px; border-top:1px solid var(--line); margin-top:36px}
+  .start h2{margin:6px 0 4px; font-size:1.22rem; font-weight:600; letter-spacing:.005em}
+  .start .lede2{margin:0 0 16px; font-size:.95rem; color:var(--muted); max-width:62ch}
+  .start .lede2 a{color:var(--violet)}
+  ol.steps{margin:0; padding:0; list-style:none; counter-reset:step}
+  ol.steps li{position:relative; padding:14px 0 14px 44px; border-top:1px solid var(--line); counter-increment:step; font-size:.94rem; color:var(--muted); max-width:74ch}
+  ol.steps li:first-child{border-top:none}
+  ol.steps li::before{content:counter(step); position:absolute; left:0; top:13px; width:26px; height:26px; display:grid; place-items:center; font-family:"JetBrains Mono",monospace; font-size:.78rem; color:var(--violet); border:1px solid var(--line); border-radius:6px}
+  ol.steps li b{color:var(--ink); font-weight:600}
+  ol.steps code{font-family:"JetBrains Mono",monospace; font-size:.84em; color:var(--ink); background:rgba(255,255,255,.05); padding:1px 5px; border-radius:4px}
+  ol.steps a{color:var(--violet)}
+
   /* ── footer ── */
   footer{margin-top:64px; padding:30px 0 56px; border-top:1px solid var(--line); display:flex; flex-wrap:wrap; gap:8px 22px; align-items:center; justify-content:space-between; font-family:"JetBrains Mono",monospace; font-size:.76rem; color:var(--faint)}
   footer a{color:var(--muted); transition:color .18s} footer a:hover{color:var(--ink)}
@@ -177,6 +190,18 @@
 <span class="c"># teach your coding agent how to build</span>
 <span class="p">$</span> boogy skills install</pre>
     </div>
+  </section>
+
+  <section class="start anim d5" aria-label="Agents start here">
+    <div class="sec-label">// agents — start here</div>
+    <h2>If you're a coding agent, do this first</h2>
+    <p class="lede2">Read <a href="https://boogy.ai/llms.txt"><code>boogy.ai/llms.txt</code></a> first — the canonical, self-contained build guide (full text: <a href="https://boogy.ai/llms-full.txt"><code>llms-full.txt</code></a>). Then walk the user through this bootstrap:</p>
+    <ol class="steps">
+      <li><b>Give the user a way in.</b> Offer to connect the anonymous MCP server (<code>claude mcp add boogy https://boogy.ai/mcp</code>) <em>and/or</em> install the CLI (<code>cargo install --locked --git https://github.com/Boogy-ai/boogy-sdk boogy-cli</code>). Vendor the build skills now too: <code>boogy skills install</code>.</li>
+      <li><b>Authenticate.</b> Run <code>login</code> (MCP) or <code>boogy login</code> (CLI) — it prints a link. <b>Ask the user to click it, sign in, then return to the terminal</b>; the token comes back automatically.</li>
+      <li><b>Skills are ready.</b> Have the user run <code>/reload-skills</code> — by now the Boogy build skills are vendored and loaded in your session.</li>
+      <li><b>Build.</b> Design, scaffold, and <code>boogy deploy</code> — the skills carry the workflow from here.</li>
+    </ol>
   </section>
 
   <section class="routes">
