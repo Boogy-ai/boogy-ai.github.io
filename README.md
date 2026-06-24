@@ -3,7 +3,7 @@
 The Boogy developer hub — the organization's GitHub Pages site, served at
 **<https://boogy-ai.github.io/>**. A single static landing page that routes
 developers and coding agents to the public MCP server (`https://boogy.ai/mcp`),
-the SDK API reference, agent skills, the service catalog, and the platform.
+the SDK API reference, the web SDK, agent skills, the service catalog, and the platform.
 
 Coding agents can bootstrap with zero install by connecting to the MCP server
 (`claude mcp add boogy https://boogy.ai/mcp`): guidance + host-truth validation +
