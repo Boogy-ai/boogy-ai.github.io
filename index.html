@@ -198,7 +198,7 @@
     <p class="lede2">Read <a href="https://boogy.ai/llms.txt"><code>boogy.ai/llms.txt</code></a> first — the canonical, self-contained build guide (full text: <a href="https://boogy.ai/llms-full.txt"><code>llms-full.txt</code></a>). Then walk the user through this bootstrap:</p>
     <ol class="steps">
       <li><b>Give the user a way in.</b> Offer to connect the anonymous MCP server (<code>claude mcp add boogy https://boogy.ai/mcp</code>) <em>and/or</em> install the CLI (<code>cargo install --locked --git https://github.com/Boogy-ai/boogy-sdk boogy-cli</code>). Vendor the build skills now too: <code>boogy skills install</code>.</li>
-      <li><b>Authenticate.</b> Run <code>login</code> (MCP) or <code>boogy login</code> (CLI) — it prints a link. <b>Ask the user to click it, sign in, then return to the terminal</b>; the token comes back automatically.</li>
+      <li><b>Authenticate.</b> Run <code>login</code> (MCP) or <code>boogy login</code> (CLI) — it prints a link. <b>Ask the user to click it, sign in, then return to the terminal</b>; the token comes back automatically. A first-time user picks a <b>handle</b> — and the handle <em>is</em> the subdomain (lowercase <code>[a-z0-9-]</code>, no <code>_</code>/<code>.</code>); services live at <code>https://&lt;handle&gt;.boogy.ai/&lt;service&gt;/…</code>.</li>
       <li><b>Skills are ready.</b> Have the user run <code>/reload-skills</code> — by now the Boogy build skills are vendored and loaded in your session.</li>
       <li><b>Build.</b> Design, scaffold, and <code>boogy deploy</code> — the skills carry the workflow from here.</li>
     </ol>
