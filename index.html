@@ -187,20 +187,21 @@
 <pre><span class="c"># grab the SDK + a starter service</span>
 <span class="p">$</span> cargo add boogy-sdk <span class="c">--git</span> <span class="s">https://github.com/Boogy-ai/boogy-sdk</span>
 
-<span class="c"># teach your coding agent how to build</span>
-<span class="p">$</span> boogy skills install</pre>
+<span class="c"># teach your coding agent to build (Claude Code)</span>
+<span class="p">$</span> claude plugin marketplace add Boogy-ai/boogy-superpowers
+<span class="p">$</span> claude plugin install boogy-superpowers</pre>
     </div>
   </section>
 
   <section class="start anim d5" aria-label="Agents start here">
     <div class="sec-label">// agents — start here</div>
     <h2>If you're a coding agent, do this first</h2>
-    <p class="lede2">Read <a href="https://boogy.ai/llms.txt"><code>boogy.ai/llms.txt</code></a> first — the canonical, self-contained build guide (full text: <a href="https://boogy.ai/llms-full.txt"><code>llms-full.txt</code></a>). Then walk the user through this bootstrap:</p>
+    <p class="lede2"><b>On Claude Code?</b> Install the plugin — it bundles the build skills (auto-discovered), wires the Boogy MCP (sign-in + host-truth validation as tools), and sets the build contract, in one step. On another agent, read <a href="https://boogy.ai/llms.txt"><code>boogy.ai/llms.txt</code></a> (the bootstrap) and follow it. Either way, the steps are:</p>
     <ol class="steps">
-      <li><b>Give the user a way in.</b> Offer to connect the anonymous MCP server (<code>claude mcp add boogy https://boogy.ai/mcp</code>) <em>and/or</em> install the CLI (<code>cargo install --locked --git https://github.com/Boogy-ai/boogy-sdk boogy-cli</code>). Vendor the build skills now too: <code>boogy skills install</code>.</li>
-      <li><b>Authenticate.</b> Run <code>login</code> (MCP) or <code>boogy login</code> (CLI) — it prints a link. <b>Ask the user to click it, sign in, then return to the terminal</b>; the token comes back automatically. A first-time user picks a <b>handle</b> — and the handle <em>is</em> the subdomain (lowercase <code>[a-z0-9-]</code>, no <code>_</code>/<code>.</code>); services live at <code>https://&lt;handle&gt;.boogy.ai/&lt;service&gt;/…</code>.</li>
-      <li><b>Skills are ready.</b> Have the user run <code>/reload-skills</code> — by now the Boogy build skills are vendored and loaded in your session.</li>
-      <li><b>Build.</b> Design, scaffold, and <code>boogy deploy</code> — the skills carry the workflow from here.</li>
+      <li><b>Claude Code — install the plugin.</b> <code>claude plugin marketplace add Boogy-ai/boogy-superpowers</code>, then <code>claude plugin install boogy-superpowers</code>. It bundles the skills, wires the Boogy MCP, and adds the onramp gate. <em>No plugin?</em> Install the CLI (<code>cargo install --locked --git https://github.com/Boogy-ai/boogy-sdk boogy-cli</code>) and vendor the skills: <code>boogy skills install</code>.</li>
+      <li><b>Authenticate the user.</b> Run the <code>login</code> tool (or <code>boogy login</code>) — it prints a link. <b>Ask the user to click it, sign in, then return</b>; the token comes back automatically. A first-time user picks a <b>handle</b> (lowercase <code>[a-z0-9-]</code>, no <code>_</code>/<code>.</code>) — their subdomain, at <code>https://&lt;handle&gt;.boogy.ai/&lt;service&gt;/…</code>.</li>
+      <li><b>Work strictly from the skills.</b> Invoke them (start with <code>using-boogy</code>) — never summarize or &ldquo;distill&rdquo; them into your own words. If a step is blocked, <b>stop and ask the user</b>; don&rsquo;t work around it.</li>
+      <li><b>Build &amp; deploy.</b> The skills carry the workflow; <code>boogy deploy</code> ships it (the CLI or <code>/v1</code> API does the deploy — the MCP can&rsquo;t).</li>
     </ol>
   </section>
 
@@ -209,13 +210,13 @@
 
     <a class="route ac-skills" href="https://boogy.ai/llms.txt">
       <div class="path"><span class="sl">/</span>mcp</div>
-      <div class="body"><h3>MCP server — agents start here</h3><p>Point your coding agent at <code>https://boogy.ai/mcp</code> — anonymous, no install. Guidance (<code>get_started</code>, <code>get_skill</code>), host-truth validation (<code>validate_manifest</code>, <code>check_service</code>), and sign-in (<code>login</code> shows the user a link to click, then returns a token — no CLI needed).</p></div>
+      <div class="body"><h3>MCP server — agents start here</h3><p>Point your coding agent at <code>https://api.boogy.ai/mcp</code> — anonymous, no install (the Claude Code plugin wires this for you). Guidance (<code>get_started</code>, <code>get_skill</code>), host-truth validation (<code>validate_manifest</code>, <code>check_service</code>), and sign-in (<code>login</code> shows the user a link to click, then returns a token — no CLI needed).</p></div>
       <div class="go">→</div>
     </a>
 
     <a class="route ac-skills" href="https://boogy.ai/llms-full.txt">
       <div class="path"><span class="sl">/</span>llms-full.txt</div>
-      <div class="body"><h3>Agent context — full llms.txt</h3><p>The complete, self-contained agent guide: core concepts, the three deployment shapes, project setup, build, manifest, and deploy. If you're an AI agent, read <code>https://boogy.ai/llms-full.txt</code> first.</p></div>
+      <div class="body"><h3>Agent context — llms-full.txt</h3><p>The agent bootstrap: the setup contract, core concepts, and the three deployment shapes. The build workflow itself lives in the installed skills — invoke them, don't work from a copy. If you're an AI agent, read <code>https://boogy.ai/llms-full.txt</code> first.</p></div>
       <div class="go">→</div>
     </a>
 
