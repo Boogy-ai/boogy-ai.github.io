@@ -154,8 +154,29 @@
   .routes .route:nth-child(6){animation-delay:.54s}
   @media (prefers-reduced-motion:reduce){.anim,.routes .route{animation:none; opacity:1}}
 
+  /* ── what a service gets ── */
+  .caps{padding:0 0 60px}
+  .capgrid{
+    display:grid; grid-template-columns:repeat(2,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+    border-radius:10px; overflow:hidden; margin-top:20px;
+  }
+  .cap{background:var(--panel); padding:19px 21px}
+  .cap h3{
+    font-family:"JetBrains Mono",monospace; font-size:var(--fs-tag); font-weight:500;
+    text-transform:uppercase; letter-spacing:.1em; margin:0 0 9px;
+  }
+  .cap p{margin:0; font-size:.95rem; color:var(--muted); line-height:1.55}
+  .cap p b{color:var(--ink); font-weight:500}
+  .cap code{font-family:"JetBrains Mono",monospace; font-size:.84em; color:var(--faint)}
+  .cap.e h3{color:var(--emerald)} .cap.s h3{color:var(--sky)}
+  .cap.v h3{color:var(--violet)} .cap.c h3{color:var(--coral)}
+  .capnote{margin:18px 0 0; font-size:.93rem; color:var(--faint); max-width:70ch}
+  .capnote b{color:var(--muted); font-weight:500}
+
   /* ── responsive ── */
   @media (max-width:620px){
+    .capgrid{grid-template-columns:1fr}
     .topnav a.hide-sm{display:none}
     h1{font-size:clamp(2.2rem,11vw,3rem)}
     .route{grid-template-columns:1fr auto; gap:12px}
@@ -181,7 +202,6 @@
     <h1 class="anim d2">Vibe whole apps<br>into <span class="em">production</span>.</h1>
     <p class="lede anim d3">Vibe-code a frontend, an API over <b>REST, JSON-RPC, MCP, or protobuf RPC</b>, and a store that scales itself — Boogy runs it all as real production services: <b>interconnected, fast, and pay-per-use</b>.</p>
     <p class="store anim d4">Every service gets a <b>relational, ACID</b> data store that <b>scales on its own</b> and <b>bills per use</b> — and a single <span class="hl">transaction can span calls across services</span>.</p>
-    <p class="store anim d4">Plus what a real app needs and nobody wants to build twice: <b>sign-in for your users</b>, background jobs, real-time channels, file storage, cryptographic signing, OAuth connections to third-party accounts — and the option to <span class="hl">charge per route</span> against a prepaid ledger.</p>
 
     <div class="cmd anim d5" aria-label="Get started">
       <div class="bar"><i></i><i></i><i></i><span>&nbsp;your project</span></div>
@@ -190,8 +210,42 @@
 
 <span class="c"># teach your coding agent to build (Claude Code)</span>
 <span class="p">$</span> claude plugin marketplace add Boogy-ai/boogy-superpowers
-<span class="p">$</span> claude plugin install boogy-superpowers</pre>
+<span class="p">$</span> claude plugin install boogy-superpowers
+
+<span class="c"># any other agent — the MCP alone, no install</span>
+<span class="p">$</span> claude mcp add boogy <span class="s">https://api.boogy.ai/mcp</span></pre>
     </div>
+  </section>
+
+  <section class="caps anim d5" aria-label="What a service gets">
+    <div class="sec-label">// what a service gets</div>
+    <div class="capgrid">
+      <div class="cap e">
+        <h3>Surfaces</h3>
+        <p>REST, JSON-RPC, MCP tools and protobuf RPC — Connect, gRPC-Web and native gRPC over one mount. <code>openapi.json</code> and <code>openrpc.json</code> are generated and served for you.</p>
+      </div>
+      <div class="cap s">
+        <h3>Data</h3>
+        <p>A private store with real relations and transactions. Declare models in Rust; indexes and columns reconcile themselves on deploy.</p>
+      </div>
+      <div class="cap v">
+        <h3>Frontend</h3>
+        <p>Ship TypeScript or JS <b>source</b> — the platform transpiles and serves it. No Node, no bundler, no build step on your machine. Static site, full-stack, or backend-only.</p>
+      </div>
+      <div class="cap c">
+        <h3>Identity</h3>
+        <p>Accounts, &ldquo;Sign in with Boogy&rdquo; for your users, a different pseudonym per service so apps can&rsquo;t correlate them, API keys, scopes, and delegation between services.</p>
+      </div>
+      <div class="cap e">
+        <h3>Money</h3>
+        <p>Charge per route execution against a prepaid ledger — reserved before the call, settled only if it succeeds. Publish a module and earn a share of what instances of it generate.</p>
+      </div>
+      <div class="cap s">
+        <h3>And the rest</h3>
+        <p>Background jobs, real-time channels, streaming responses, file storage, cryptographic signing, OAuth connections to your users&rsquo; third-party accounts, and LLM completions across providers.</p>
+      </div>
+    </div>
+    <p class="capnote">Capabilities are <b>deny-by-default</b>: a service reaches nothing it hasn&rsquo;t declared in its manifest, and ingress mode, rate limits and CORS are enforced by the host rather than by your code.</p>
   </section>
 
   <section class="start anim d5" aria-label="Agents start here">
@@ -200,7 +254,7 @@
     <p class="lede2"><b>On Claude Code?</b> Install the plugin — it bundles the build skills (auto-discovered), wires the Boogy MCP (sign-in + host-truth validation as tools), and sets the build contract, in one step. On another agent, read <a href="https://boogy.ai/llms.txt"><code>boogy.ai/llms.txt</code></a> (the bootstrap) and follow it. Either way, the steps are:</p>
     <ol class="steps">
       <li><b>Claude Code — install the plugin.</b> <code>claude plugin marketplace add Boogy-ai/boogy-superpowers</code>, then <code>claude plugin install boogy-superpowers</code>. It bundles the skills, wires the Boogy MCP, and adds the onramp gate. <em>No plugin?</em> Install the CLI (<code>cargo install --locked --git https://github.com/Boogy-ai/boogy-sdk boogy-cli</code>) and vendor the skills: <code>boogy skills install</code>.</li>
-      <li><b>Authenticate the user.</b> Run the <code>login</code> tool (or <code>boogy login</code>) — it prints a link. <b>Ask the user to click it, sign in, then return</b>; the token comes back automatically. A first-time user picks a <b>handle</b> (lowercase <code>[a-z0-9-]</code>, no <code>_</code>/<code>.</code>) — their subdomain, at <code>https://&lt;handle&gt;.boogy.app/&lt;service&gt;/…</code>.</li>
+      <li><b>Authenticate the user.</b> Run the <code>login</code> tool (or <code>boogy login</code>) — it prints a link. <b>Ask the user to click it, sign in, then return</b>; the token comes back automatically. A first-time user picks a <b>handle</b> — <b>4 to 30 characters</b>, lowercase <code>[a-z0-9-]</code>, counted after the platform fixes what it can (<code>My_App</code> → <code>my-app</code>). It becomes their subdomain, at <code>https://&lt;handle&gt;.boogy.app/&lt;mount&gt;/…</code>, so <b>they choose it, never you</b>.</li>
       <li><b>Work strictly from the skills.</b> Invoke them (start with <code>using-boogy</code>) — never summarize or &ldquo;distill&rdquo; them into your own words. If a step is blocked, <b>stop and ask the user</b>; don&rsquo;t work around it.</li>
       <li><b>Build &amp; deploy.</b> The skills carry the workflow; <code>boogy deploy</code> ships it (the CLI or <code>/v1</code> API does the deploy — the MCP can&rsquo;t).</li>
     </ol>
@@ -242,6 +296,12 @@
     <a class="route ac-skills" href="https://github.com/Boogy-ai/boogy-superpowers">
       <div class="path"><span class="sl">/</span>superpowers</div>
       <div class="body"><h3>Agent skills</h3><p>Expert build workflows your coding agent installs and follows — auto-discovered by Claude Code.</p></div>
+      <div class="go">→</div>
+    </a>
+
+    <a class="route ac-docs" href="https://github.com/Boogy-ai/boogy-superpowers/blob/main/skills/boogy-serving-frontends/SKILL.md">
+      <div class="path"><span class="sl">/</span>frontends</div>
+      <div class="body"><h3>Ship a UI with no build step</h3><p>Point a manifest at a directory of TypeScript, HTML and CSS. The platform transpiles it at deploy, content-addresses every asset, and serves them itself — your wasm only handles the API routes. Static site, full-stack, or backend-only, from the same manifest.</p></div>
       <div class="go">→</div>
     </a>
 
