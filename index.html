@@ -103,6 +103,13 @@
   .cmd .bar i{width:9px; height:9px; border-radius:50%; background:var(--line-2); font-style:normal}
   .cmd pre{margin:0; padding:16px 18px; overflow-x:auto; line-height:1.85; color:#cfd2e6}
   .cmd .p{color:var(--emerald)} .cmd .c{color:var(--faint)} .cmd .s{color:var(--sky)}
+  /* `k` is a slash command typed INSIDE Claude Code, not a shell line — no `$`
+     prompt, and a colour of its own so it cannot be mistaken for one. */
+  .cmd .k{color:var(--violet)} .cmd .q{color:var(--coral)}
+  .cmdnote{margin:14px 0 0; font-size:.93rem; color:var(--faint); max-width:64ch}
+  .cmdnote code{font-family:"JetBrains Mono",monospace; font-size:.86em; color:var(--muted)}
+  .cmdnote a{color:var(--muted); border-bottom:1px solid var(--line-2)}
+  .cmdnote a:hover{color:var(--ink)}
 
   /* ── routes (the signature) ── */
   .routes{padding:18px 0 10px}
@@ -203,18 +210,21 @@
     <p class="lede anim d3">Vibe-code a frontend, an API over <b>REST, JSON-RPC, MCP, or protobuf RPC</b>, and a store that scales itself — Boogy runs it all as real production services: <b>interconnected, fast, and pay-per-use</b>.</p>
     <p class="store anim d4">Every service gets a <b>relational, ACID</b> data store that <b>scales on its own</b> and <b>bills per use</b> — and a single <span class="hl">transaction can span calls across services</span>.</p>
 
-    <div class="cmd anim d5" aria-label="Get started">
-      <div class="bar"><i></i><i></i><i></i><span>&nbsp;your project</span></div>
-<pre><span class="c"># grab the SDK + a starter service</span>
-<span class="p">$</span> cargo add boogy-sdk <span class="c">--git</span> <span class="s">https://github.com/Boogy-ai/boogy-sdk</span>
+    <p class="store anim d4">You don&rsquo;t start by learning an SDK. <b>Install the plugin, then ask for what you want</b> — it carries the skills, the platform tools and the rules, and your agent does the building.</p>
 
-<span class="c"># teach your coding agent to build (Claude Code)</span>
+    <div class="cmd anim d5" aria-label="Install the plugin">
+      <div class="bar"><i></i><i></i><i></i><span>&nbsp;the whole setup</span></div>
+<pre><span class="c"># in your terminal</span>
 <span class="p">$</span> claude plugin marketplace add Boogy-ai/boogy-superpowers
 <span class="p">$</span> claude plugin install boogy-superpowers
 
-<span class="c"># any other agent — the MCP alone, no install</span>
-<span class="p">$</span> claude mcp add boogy <span class="s">https://api.boogy.ai/mcp</span></pre>
+<span class="c"># then inside Claude Code — nothing activates until you do</span>
+<span class="k">/reload-plugins</span>
+
+<span class="c"># that's the setup. now just ask:</span>
+<span class="q">&ldquo;build me a link shortener with a web page, and deploy it&rdquo;</span></pre>
     </div>
+    <p class="cmdnote anim d5">Not on Claude Code? Point any MCP-capable agent at the server instead — <code>claude mcp add boogy https://api.boogy.ai/mcp</code> — or read <a href="https://boogy.ai/llms.txt"><code>boogy.ai/llms.txt</code></a> and follow it.</p>
   </section>
 
   <section class="caps anim d5" aria-label="What a service gets">
@@ -253,7 +263,7 @@
     <h2>If you're a coding agent, do this first</h2>
     <p class="lede2"><b>On Claude Code?</b> Install the plugin — it bundles the build skills (auto-discovered), wires the Boogy MCP (sign-in + host-truth validation as tools), and sets the build contract, in one step. On another agent, read <a href="https://boogy.ai/llms.txt"><code>boogy.ai/llms.txt</code></a> (the bootstrap) and follow it. Either way, the steps are:</p>
     <ol class="steps">
-      <li><b>Claude Code — install the plugin.</b> <code>claude plugin marketplace add Boogy-ai/boogy-superpowers</code>, then <code>claude plugin install boogy-superpowers</code>. It bundles the skills, wires the Boogy MCP, and adds the onramp gate. <em>No plugin?</em> Install the CLI (<code>cargo install --locked --git https://github.com/Boogy-ai/boogy-sdk boogy-cli</code>) and vendor the skills: <code>boogy skills install</code>.</li>
+      <li><b>Install the plugin — this is the setup.</b> <code>claude plugin marketplace add Boogy-ai/boogy-superpowers</code>, then <code>claude plugin install boogy-superpowers</code>. It bundles the skills, wires the Boogy MCP, and adds the onramp gate. <b>Then tell the user to run <code>/reload-plugins</code></b> — none of it activates until they do, and there is no error to tell you that; it simply behaves as though the plugin were not installed. <em>Not on Claude Code?</em> Add the MCP (<code>claude mcp add boogy https://api.boogy.ai/mcp</code>), or install the CLI (<code>cargo install --locked --git https://github.com/Boogy-ai/boogy-sdk boogy-cli</code>) and vendor the skills with <code>boogy skills install</code>.</li>
       <li><b>Authenticate the user.</b> Run the <code>login</code> tool (or <code>boogy login</code>) — it prints a link. <b>Ask the user to click it, sign in, then return</b>; the token comes back automatically. A first-time user picks a <b>handle</b> — <b>4 to 30 characters</b>, lowercase <code>[a-z0-9-]</code>, counted after the platform fixes what it can (<code>My_App</code> → <code>my-app</code>). It becomes their subdomain, at <code>https://&lt;handle&gt;.boogy.app/&lt;mount&gt;/…</code>, so <b>they choose it, never you</b>.</li>
       <li><b>Work strictly from the skills.</b> Invoke them (start with <code>using-boogy</code>) — never summarize or &ldquo;distill&rdquo; them into your own words. If a step is blocked, <b>stop and ask the user</b>; don&rsquo;t work around it.</li>
       <li><b>Build &amp; deploy.</b> The skills carry the workflow; <code>boogy deploy</code> ships it (the CLI or <code>/v1</code> API does the deploy — the MCP can&rsquo;t).</li>
@@ -263,9 +273,15 @@
   <section class="routes">
     <div class="sec-label">// routes</div>
 
+    <a class="route ac-skills" href="https://github.com/Boogy-ai/boogy-superpowers">
+      <div class="path"><span class="sl">/</span>plugin</div>
+      <div class="body"><h3>The plugin — start here</h3><p>One install is the whole setup: 40 build skills your agent follows, the Boogy MCP wired as tools (sign-in, host-truth validation), and the gate that keeps it working from the skills instead of from guesswork. <code>claude plugin install boogy-superpowers</code>, then <code>/reload-plugins</code>.</p></div>
+      <div class="go">→</div>
+    </a>
+
     <a class="route ac-skills" href="https://boogy.ai/llms.txt">
       <div class="path"><span class="sl">/</span>mcp</div>
-      <div class="body"><h3>MCP server — agents start here</h3><p>Point your coding agent at <code>https://api.boogy.ai/mcp</code> — anonymous, no install (the Claude Code plugin wires this for you). Guidance (<code>get_started</code>, <code>get_skill</code>), host-truth validation (<code>validate_manifest</code>, <code>check_service</code>), and sign-in (<code>login</code> shows the user a link to click, then returns a token — no CLI needed).</p></div>
+      <div class="body"><h3>MCP server — without the plugin</h3><p>For agents that aren&rsquo;t Claude Code. <code>https://api.boogy.ai/mcp</code> — anonymous, no install; the plugin wires this for you already. Guidance (<code>get_started</code>, <code>get_skill</code>), host-truth validation (<code>validate_manifest</code>, <code>check_service</code>), and sign-in (<code>login</code> shows the user a link to click, then returns a token — no CLI needed).</p></div>
       <div class="go">→</div>
     </a>
 
